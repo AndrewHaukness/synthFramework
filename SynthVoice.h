@@ -15,9 +15,11 @@
 class SynthVoice : public SynthesiserVoice
 {
 	public:
+
+		//dynamic cast returns true if the sound is casted as a SynthSound
 		bool canPlaySound(SynthesiserSound* sound)
 		{
-
+			return dynamic_cast<SynthSound*>(sound) != nullptr;
 		}
 
 		//=========================================
@@ -25,14 +27,15 @@ class SynthVoice : public SynthesiserVoice
 		void startNote(int midiNoteNumber, float velocity, SynthesiserSound* sound,
 			int currentPitchWheelPosition)
 		{
-
+			frequency = MidiMessage::getMidiNoteInHertz(midiNoteNumber);
+			Logger::outputDebugString(std::to_string(midiNoteNumber));
 		}
 
 		//=========================================
 
 		void stopNote(float velocity, bool allowTailOff)
 		{
-
+			clearCurrentNote();
 		}
 
 		//=========================================
@@ -59,5 +62,6 @@ class SynthVoice : public SynthesiserVoice
 		//=========================================
 
 	private:
-
+		double level;
+		double frequency;
 };
