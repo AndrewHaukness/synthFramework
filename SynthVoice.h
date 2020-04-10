@@ -11,6 +11,7 @@
 #pragma once
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "SynthSound.h"
+#include "maximilian.h"
 
 class SynthVoice : public SynthesiserVoice
 {
@@ -57,6 +58,17 @@ class SynthVoice : public SynthesiserVoice
 		void renderNextBlock(AudioBuffer<float>& outputBuffer, int startSample, int numSamples)
 		{
 
+			for (int sample = 0; sample < numSamples; ++sample)
+			{
+				double theWave = osc1.sinewave(440);
+
+				for (int channel = 0; channel < outputBuffer.getNumChannels(); ++channel)
+				{
+					outputBuffer.addSample(channel, startSample, theWave);
+				}
+
+				++startSample;
+			}
 		}
 
 		//=========================================
@@ -64,4 +76,6 @@ class SynthVoice : public SynthesiserVoice
 	private:
 		double level;
 		double frequency;
+
+		maxiOsc osc1;
 };
