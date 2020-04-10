@@ -28,6 +28,8 @@ class SynthVoice : public SynthesiserVoice
 		void startNote(int midiNoteNumber, float velocity, SynthesiserSound* sound,
 			int currentPitchWheelPosition)
 		{
+			env1.trigger = 1;
+			level = velocity;
 			frequency = MidiMessage::getMidiNoteInHertz(midiNoteNumber);
 			Logger::outputDebugString(std::to_string(midiNoteNumber));
 		}
@@ -36,7 +38,11 @@ class SynthVoice : public SynthesiserVoice
 
 		void stopNote(float velocity, bool allowTailOff)
 		{
-			clearCurrentNote();
+			env1.trigger = 0;
+			allowTailOff = true;
+
+			if ( velocity == 0 )
+				clearCurrentNote();
 		}
 
 		//=========================================
@@ -57,14 +63,21 @@ class SynthVoice : public SynthesiserVoice
 
 		void renderNextBlock(AudioBuffer<float>& outputBuffer, int startSample, int numSamples)
 		{
+			env1.setAttack(2000); //2000 ms =  2s
+			env1.setDecay(500);
+			env1.setSustain(0.8); // sustain is value from 0 to 1
+			env1.setRelease(2000);
+
 
 			for (int sample = 0; sample < numSamples; ++sample)
 			{
-				double theWave = osc1.sinewave(440);
+				double theWave = osc1.sinewave(frequency);
+				double theSound = env1.adsr(theWave, env1.trigger) * level;
+				double filteredSound = filter1.lores(theSound, 100, 0.1);
 
 				for (int channel = 0; channel < outputBuffer.getNumChannels(); ++channel)
 				{
-					outputBuffer.addSample(channel, startSample, theWave);
+					outputBuffer.addSample(channel, startSample, filteredSound);
 				}
 
 				++startSample;
@@ -78,4 +91,6 @@ class SynthVoice : public SynthesiserVoice
 		double frequency;
 
 		maxiOsc osc1;
+		maxiEnv env1;
+		maxiFilter filter1;
 };
