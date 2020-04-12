@@ -17,10 +17,20 @@ class SynthVoice : public SynthesiserVoice
 {
 	public:
 
+
 		//dynamic cast returns true if the sound is casted as a SynthSound
 		bool canPlaySound(SynthesiserSound* sound)
 		{
 			return dynamic_cast<SynthSound*>(sound) != nullptr;
+		}
+
+		//=========================================
+
+		void getParam(float* attack, float* release)
+		{
+			env1.setAttack(double(*attack)); //2000 ms =  2s
+			env1.setRelease(double(*release));
+
 		}
 
 		//=========================================
@@ -31,7 +41,6 @@ class SynthVoice : public SynthesiserVoice
 			env1.trigger = 1;
 			level = velocity;
 			frequency = MidiMessage::getMidiNoteInHertz(midiNoteNumber);
-			Logger::outputDebugString(std::to_string(midiNoteNumber));
 		}
 
 		//=========================================
@@ -63,10 +72,10 @@ class SynthVoice : public SynthesiserVoice
 
 		void renderNextBlock(AudioBuffer<float>& outputBuffer, int startSample, int numSamples)
 		{
-			env1.setAttack(2000); //2000 ms =  2s
+
 			env1.setDecay(500);
 			env1.setSustain(0.8); // sustain is value from 0 to 1
-			env1.setRelease(2000);
+
 
 
 			for (int sample = 0; sample < numSamples; ++sample)
@@ -77,7 +86,7 @@ class SynthVoice : public SynthesiserVoice
 
 				for (int channel = 0; channel < outputBuffer.getNumChannels(); ++channel)
 				{
-					outputBuffer.addSample(channel, startSample, filteredSound);
+					outputBuffer.addSample(channel, startSample, theSound);
 				}
 
 				++startSample;

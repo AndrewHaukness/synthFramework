@@ -50,12 +50,16 @@ public:
     int getNumPrograms() override;
     int getCurrentProgram() override;
     void setCurrentProgram (int index) override;
-    const String getProgramName (int index) override;
+    const String getProgramName (int index) override; 
     void changeProgramName (int index, const String& newName) override;
 
     //==============================================================================
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
+
+    float attackTime;
+    float releaseTime;
+    AudioProcessorValueTreeState tree;
 
 private:
     //==============================================================================
