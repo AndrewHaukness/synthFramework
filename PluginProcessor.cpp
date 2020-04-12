@@ -27,10 +27,13 @@ tree (*this, nullptr)
 #endif
 {
     NormalisableRange<float> attackParam(0.1f, 5000.0f);
+    NormalisableRange<float> decayParam(1.0f, 2000.0f);
+    NormalisableRange<float> sustainParam(0.0f, 1.0f);
     NormalisableRange<float> releaseParam(0.1f, 5000.0f);
 
     tree.createAndAddParameter("attack", "Attack", "Attack", attackParam, 0.1f, nullptr, nullptr);
-
+    tree.createAndAddParameter("decay", "Decay", "Decay", decayParam, 1.0f, nullptr, nullptr);
+    tree.createAndAddParameter("sustain", "Sustain", "Sustain", sustainParam, 0.8f, nullptr, nullptr);
     tree.createAndAddParameter("release", "Release", "Release", releaseParam, 0.1f, nullptr, nullptr);
 
     tree.state = ValueTree("Foo");
@@ -162,6 +165,8 @@ void SynthFrameworkAudioProcessor::processBlock (AudioBuffer<float>& buffer, Mid
         if ((myVoice = dynamic_cast<SynthVoice*>(mySynth.getVoice(i))))
         {
             myVoice->getParam(tree.getRawParameterValue("attack"),
+                tree.getRawParameterValue("decay"),
+                tree.getRawParameterValue("sustain"),
                 tree.getRawParameterValue("release"));
         }
     }
