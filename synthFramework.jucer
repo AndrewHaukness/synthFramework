@@ -41,6 +41,8 @@
       <FILE id="V9Qw9Q" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
       <FILE id="iBhqW5" name="SynthSound.h" compile="0" resource="0" file="Source/SynthSound.h"/>
       <FILE id="L2C34n" name="SynthVoice.h" compile="0" resource="0" file="Source/SynthVoice.h"/>
+      <FILE id="UzDPXk" name="Oscillator.h" compile="0" resource="0" file="Source/Oscillator.h"/>
+      <FILE id="dYv2Es" name="Oscillator.cpp" compile="1" resource="0" file="Source/Oscillator.cpp"/>
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>

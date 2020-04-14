@@ -26,13 +26,40 @@ class SynthVoice : public SynthesiserVoice
 
 		//=========================================
 
-		void getParam(float* attack, float* decay, float* sustain, float* release)
+		void getEnvelopeParams(float* attack, float* decay, float* sustain, float* release)
 		{
 			env1.setAttack(double(*attack)); //2000 ms =  2s
 			env1.setDecay(double(*decay));
 			env1.setSustain(double(*sustain)); // sustain is value from 0 to 1
 			env1.setRelease(double(*release));
 
+		}
+
+		//=========================================
+
+		void getOscType(float* selection)
+		{
+			theWave = *selection;
+		}
+
+		double setOscType()
+		{
+			if (theWave == 0)
+			{
+				return osc1.sinewave(frequency);
+			}
+			if (theWave == 1)
+			{
+				return osc1.saw(frequency);
+			}
+			if (theWave == 2)
+			{
+				return osc1.square(frequency);
+			}
+			else
+			{
+				return osc1.sinewave(frequency);
+			}
 		}
 
 		//=========================================
@@ -79,9 +106,9 @@ class SynthVoice : public SynthesiserVoice
 
 			for (int sample = 0; sample < numSamples; ++sample)
 			{
-				double theWave = osc1.sinewave(frequency);
-				double theSound = env1.adsr(theWave, env1.trigger) * level;
-				double filteredSound = filter1.lores(theSound, 100, 0.1);
+				//double theWave = osc1.sinewave(frequency);
+				double theSound = env1.adsr(setOscType(), env1.trigger) * level;
+				//double filteredSound = filter1.lores(theSound, 100, 0.1);
 
 				for (int channel = 0; channel < outputBuffer.getNumChannels(); ++channel)
 				{
@@ -97,6 +124,8 @@ class SynthVoice : public SynthesiserVoice
 	private:
 		double level;
 		double frequency;
+
+		int theWave;
 
 		maxiOsc osc1;
 		maxiEnv env1;

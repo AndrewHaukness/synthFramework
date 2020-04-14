@@ -13,13 +13,15 @@
 
 //==============================================================================
 SynthFrameworkAudioProcessorEditor::SynthFrameworkAudioProcessorEditor (SynthFrameworkAudioProcessor& p)
-    : AudioProcessorEditor (&p), processor (p)
+    : AudioProcessorEditor (&p), processor (p), oscGui(p)
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    setSize (400, 300);
+    setSize (400, 200);
 
-    attackSlider.setSliderStyle(Slider::SliderStyle::LinearVertical);
+    addAndMakeVisible(&oscGui);
+
+   /* attackSlider.setSliderStyle(Slider::SliderStyle::LinearVertical);
     attackSlider.setRange(0.1f, 5000.0f); // 5000 ms
     attackSlider.setValue(0.1f);
     attackSlider.setTextBoxStyle(Slider::NoTextBox, true, 0, 0);
@@ -55,7 +57,7 @@ SynthFrameworkAudioProcessorEditor::SynthFrameworkAudioProcessorEditor (SynthFra
     releaseTree = new AudioProcessorValueTreeState::SliderAttachment(processor.tree, "release", releaseSlider);
 
 
-
+    */
 
 }
 
@@ -72,17 +74,25 @@ void SynthFrameworkAudioProcessorEditor::paint (Graphics& g)
 
 void SynthFrameworkAudioProcessorEditor::resized()
 {
-    attackSlider.setBounds(10, 10, 40, 100);
-    decaySlider.setBounds(60, 10, 40, 100);
-    sustainSlider.setBounds(110, 10, 40, 100);
-    releaseSlider.setBounds(170, 10, 40, 100);
+    Rectangle<int> area = getLocalBounds();
+
+    const int componentWidth = 200;
+    const int componentHeight = 200;
+
+    oscGui.setBounds(area.removeFromLeft(componentWidth).removeFromTop(componentHeight));
+
+
+   // attackSlider.setBounds(10, 10, 40, 100);
+    //decaySlider.setBounds(60, 10, 40, 100);
+    //sustainSlider.setBounds(110, 10, 40, 100);
+    //releaseSlider.setBounds(170, 10, 40, 100);
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
 }
 
 void SynthFrameworkAudioProcessorEditor::sliderValueChanged(Slider* slider)
 {
-    if (slider == &attackSlider)
+  /*  if (slider == &attackSlider)
     {
         processor.attackTime = attackSlider.getValue();
     }
@@ -100,5 +110,5 @@ void SynthFrameworkAudioProcessorEditor::sliderValueChanged(Slider* slider)
     if (slider == &releaseSlider)
     {
         processor.releaseTime = releaseSlider.getValue();
-    }
+    }*/
 }
