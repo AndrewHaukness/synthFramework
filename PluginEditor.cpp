@@ -13,52 +13,14 @@
 
 //==============================================================================
 SynthFrameworkAudioProcessorEditor::SynthFrameworkAudioProcessorEditor (SynthFrameworkAudioProcessor& p)
-    : AudioProcessorEditor (&p), processor (p), oscGui(p)
+    : AudioProcessorEditor (&p), processor (p), oscGui(p), envGui(p)
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
     setSize (400, 200);
 
     addAndMakeVisible(&oscGui);
-
-   /* attackSlider.setSliderStyle(Slider::SliderStyle::LinearVertical);
-    attackSlider.setRange(0.1f, 5000.0f); // 5000 ms
-    attackSlider.setValue(0.1f);
-    attackSlider.setTextBoxStyle(Slider::NoTextBox, true, 0, 0);
-    attackSlider.addListener(this);
-    addAndMakeVisible(&attackSlider);
-
-    decaySlider.setSliderStyle(Slider::SliderStyle::LinearVertical);
-    decaySlider.setRange(1.0f, 2000.0f);
-    decaySlider.setValue(1.0f);
-    decaySlider.setTextBoxStyle(Slider::NoTextBox, true, 0, 0);
-    decaySlider.addListener(this);
-    addAndMakeVisible(&decaySlider);
-
-    sustainSlider.setSliderStyle(Slider::SliderStyle::LinearVertical);
-    sustainSlider.setRange(0.0f, 1.0f);
-    sustainSlider.setValue(0.8f);
-    sustainSlider.setTextBoxStyle(Slider::NoTextBox, true, 0, 0);
-    sustainSlider.addListener(this);
-    addAndMakeVisible(&sustainSlider);
-
-    releaseSlider.setSliderStyle(Slider::SliderStyle::LinearVertical);
-    releaseSlider.setRange(0.1f, 5000.0f);
-    releaseSlider.setValue(0.1f);
-    releaseSlider.setTextBoxStyle(Slider::NoTextBox, true, 0, 0);
-    releaseSlider.addListener(this);
-    addAndMakeVisible(&releaseSlider);
-
-    
-
-    attackTree = new AudioProcessorValueTreeState::SliderAttachment(processor.tree, "attack", attackSlider); 
-    decayTree = new AudioProcessorValueTreeState::SliderAttachment(processor.tree, "decay", decaySlider);
-    sustainTree = new AudioProcessorValueTreeState::SliderAttachment(processor.tree, "sustain", sustainSlider);
-    releaseTree = new AudioProcessorValueTreeState::SliderAttachment(processor.tree, "release", releaseSlider);
-
-
-    */
-
+    addAndMakeVisible(&envGui);
 }
 
 SynthFrameworkAudioProcessorEditor::~SynthFrameworkAudioProcessorEditor()
@@ -80,35 +42,8 @@ void SynthFrameworkAudioProcessorEditor::resized()
     const int componentHeight = 200;
 
     oscGui.setBounds(area.removeFromLeft(componentWidth).removeFromTop(componentHeight));
-
-
-   // attackSlider.setBounds(10, 10, 40, 100);
-    //decaySlider.setBounds(60, 10, 40, 100);
-    //sustainSlider.setBounds(110, 10, 40, 100);
-    //releaseSlider.setBounds(170, 10, 40, 100);
+    envGui.setBounds(area.removeFromLeft(componentWidth).removeFromTop(componentHeight));
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
 }
 
-void SynthFrameworkAudioProcessorEditor::sliderValueChanged(Slider* slider)
-{
-  /*  if (slider == &attackSlider)
-    {
-        processor.attackTime = attackSlider.getValue();
-    }
-
-    if (slider == &decaySlider)
-    {
-        processor.releaseTime = decaySlider.getValue();
-    }
-
-    if (slider == &sustainSlider)
-    {
-        processor.releaseTime = sustainSlider.getValue();
-    }
-
-    if (slider == &releaseSlider)
-    {
-        processor.releaseTime = releaseSlider.getValue();
-    }*/
-}

@@ -40,6 +40,7 @@ void Oscillator::paint (Graphics& g)
        You should replace everything in this method with your own
        drawing code..
     */
+    g.fillAll(Colours::white);
 
 }
 
@@ -48,7 +49,7 @@ void Oscillator::resized()
     // This method is where you should set the bounds of any child
     // components that your component contains..
 
-    Rectangle<int> area = getLocalBounds().reduced(40);
+    juce:Rectangle<int> area = getLocalBounds().reduced(40);
     oscMenu.setBounds(area.removeFromTop(20));
 
 
