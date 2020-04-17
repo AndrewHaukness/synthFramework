@@ -38,6 +38,14 @@ tree (*this, nullptr)
     NormalisableRange<float> wavetypeParam(0, 2);
     tree.createAndAddParameter("wavetype", "Wavetype", "wavetype", wavetypeParam, 0, nullptr, nullptr);
 
+    NormalisableRange<float> cutoffParam(20.0f, 10000.0f);
+    NormalisableRange<float> resParam(1, 5);
+    tree.createAndAddParameter("filterCutoff", "FilterCutoff", "filterCutoff", cutoffParam, 400.0f, nullptr, nullptr);
+    tree.createAndAddParameter("filterRes", "FilterRes", "filterRes", resParam, 1, nullptr, nullptr);
+
+    NormalisableRange<float> filterTypeParam(0, 2);
+    tree.createAndAddParameter("filterType", "FilterType", "filterType", filterTypeParam, 0, nullptr, nullptr);
+
     tree.state = ValueTree("Foo");
 
 	mySynth.clearVoices();
@@ -171,6 +179,10 @@ void SynthFrameworkAudioProcessor::processBlock (AudioBuffer<float>& buffer, Mid
                                        tree.getRawParameterValue("sustain"),
                                        tree.getRawParameterValue("release"));
             myVoice->getOscType(tree.getRawParameterValue("wavetype"));
+
+            myVoice->getFilterParams(tree.getRawParameterValue("filterType"),
+                tree.getRawParameterValue("filterCutoff"),
+                tree.getRawParameterValue("filterRes"));
         }
     }
 

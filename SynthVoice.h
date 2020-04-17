@@ -34,6 +34,45 @@ class SynthVoice : public SynthesiserVoice
 			env1.setRelease(double(*release));
 
 		}
+		//=========================================
+
+		void getFilterParams(float* filterType, float* filterCutoff, float* filterRes)
+		{
+			filterChoice = *filterType;
+			cutoff = *filterCutoff;
+			resonance = *filterRes;
+		}
+
+		//=========================================
+
+		double setEnvelope()
+		{
+			return env1.adsr(setOscType(), env1.trigger) * level;
+		}
+
+		//=========================================
+
+		double setFilter()
+		{
+			if (filterChoice == 0)
+			{
+				return filter1.lores(setEnvelope(), cutoff, resonance);
+			}
+
+			if (filterChoice == 1)
+			{
+				return filter1.hires(setEnvelope(), cutoff, resonance);
+			}
+			if (filterChoice == 2)
+			{
+				return filter1.bandpass(setEnvelope(), cutoff, resonance);
+			}
+
+			else
+			{
+				return filter1.lores(setEnvelope(), cutoff, resonance);
+			}
+		}
 
 		//=========================================
 
@@ -107,7 +146,7 @@ class SynthVoice : public SynthesiserVoice
 			for (int sample = 0; sample < numSamples; ++sample)
 			{
 				//double theWave = osc1.sinewave(frequency);
-				double theSound = env1.adsr(setOscType(), env1.trigger) * level;
+				double theSound = setFilter() * 0.3 ;
 				//double filteredSound = filter1.lores(theSound, 100, 0.1);
 
 				for (int channel = 0; channel < outputBuffer.getNumChannels(); ++channel)
@@ -126,6 +165,10 @@ class SynthVoice : public SynthesiserVoice
 		double frequency;
 
 		int theWave;
+
+		int filterChoice;
+		float cutoff;
+		float resonance;
 
 		maxiOsc osc1;
 		maxiEnv env1;
